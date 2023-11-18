@@ -4,18 +4,19 @@ from openpyxl.utils import get_column_letter
 import numpy as np
 
 
-workbook = load_workbook(r'C:\Users\user\Desktop\23-24 Sem1\STAT3609\asm 3 Q8.xlsx')
-worksheet = workbook["worksheet1"]
+workbook = load_workbook(r'C:\Users\user\Desktop\23-24 Sem1\STAT3609\asm 3 Q8.xlsx')#load your file name
+worksheet = workbook["worksheet1"]# load your sheet
+
+#this is the input
 expected_return=[worksheet[f'B{i}'].value for i in range(1,9)]
 Beta=[worksheet[f'C{i}'].value for i in range(1,9)]
 Residual_variance=[worksheet[f'D{i}'].value for i in range(1,9)]
 Risk_free=worksheet['G1'].value
 Market_variance=worksheet['G2'].value
-print((1+Market_variance*sum(Beta[i]**2/Residual_variance[i] for i in range(len(expected_return)))))
-print(Market_variance * sum((Beta[i] * (expected_return[i] - Risk_free) / Residual_variance[i]) for i in range(len(expected_return))))
+
 A = Market_variance * sum((Beta[i] * (expected_return[i] - Risk_free) / Residual_variance[i]) for i in range(len(expected_return)))/(1+Market_variance*sum(Beta[i] ** 2/Residual_variance[i] for i in range(len(expected_return))))
-print(A)
 short_selling=input("Y/N")
+
 if short_selling=="Y":
     weight=[beta/non_systematic_risk*((ret-Risk_free)/beta  - A ) for ret,beta,non_systematic_risk in zip(expected_return,Beta,Residual_variance)]
     print(weight)
